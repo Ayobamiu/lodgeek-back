@@ -8,6 +8,12 @@ const upload = require("../bucket-config/bucket");
 const router = express.Router();
 
 router.post("/users", async (req, res) => {
+  const existingUser = await User.findOne({ email: req.body.email });
+  if (existingUser)
+    return res
+      .status(400)
+      .send({ error: "Account with this email already exist" });
+
   const user = new User(req.body);
   const token = await user.generateAuthToken();
   try {
@@ -18,7 +24,7 @@ router.post("/users", async (req, res) => {
   }
 });
 
-router.get("/users", auth, async (req, res) => {
+router.get("/users", async (req, res) => {
   const users = await User.find({});
   try {
     res.send(users);
