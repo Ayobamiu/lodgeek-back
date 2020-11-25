@@ -14,9 +14,9 @@ router.post("/users", async (req, res) => {
       .status(400)
       .send({ error: "Account with this email already exist" });
 
-  const user = new User(req.body);
-  const token = await user.generateAuthToken();
   try {
+    const user = new User(req.body);
+    const token = await user.generateAuthToken();
     await user.save();
     res.send({ user, token });
   } catch (error) {
@@ -31,6 +31,10 @@ router.get("/users", async (req, res) => {
   } catch (error) {
     res.status(500).send(error);
   }
+});
+
+router.get("/users/me", auth, async (req, res) => {
+  res.send(req.user);
 });
 
 router.patch("/users/:id", async (req, res) => {
@@ -58,10 +62,9 @@ router.post("/users/login", async (req, res) => {
       req.body.password
     );
     const token = await user.generateAuthToken();
-
     res.send({ user, token });
   } catch (error) {
-    res.status(400).send();
+    res.status(400).send({ error: "Unable to login" });
   }
 });
 

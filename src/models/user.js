@@ -21,11 +21,6 @@ const userSchema = mongoose.Schema(
       type: String,
       trim: true,
       required: true,
-      validate(value) {
-        if (!validator.isMobilePhone(value, "any")) {
-          throw new Error("Mobile Phone Number is invalid");
-        }
-      },
     },
     firstName: {
       type: String,
@@ -40,17 +35,11 @@ const userSchema = mongoose.Schema(
     birthDate: {
       type: String,
       trim: true,
-      validate(value) {
-        if (validator.isAfter(value)) {
-          throw new Error("Date is invalid");
-        }
-      },
     },
     password: {
       type: String,
       trim: true,
       required: true,
-      minlength: 6,
     },
     image: {
       type: String,
@@ -76,7 +65,7 @@ userSchema.methods.toJSON = function () {
 
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
-  const token = jwt.sign({ _id: user._id.toString() }, "thisismyjsonsignature");
+  const token = jwt.sign({ user: user }, "thisismyjsonsignature");
   user.tokens = user.tokens.concat({ token });
   await user.save();
   return token;
