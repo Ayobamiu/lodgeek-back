@@ -2,6 +2,7 @@ const cors = require("cors");
 const express = require("express");
 const userRoute = require("./routes/user");
 const listingRoute = require("./routes/listing");
+const bookingRoute = require("./routes/booking");
 const User = require("./models/user");
 require("./db/mongoose");
 
@@ -9,6 +10,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(userRoute);
+app.use(bookingRoute);
 app.use(listingRoute);
 
 // const user1 = new User({

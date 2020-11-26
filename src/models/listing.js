@@ -10,7 +10,7 @@ const listingSchema = mongoose.Schema(
     },
     location: {
       type: String,
-    }, 
+    },
     price: {
       type: Number,
     },
@@ -20,6 +20,12 @@ const listingSchema = mongoose.Schema(
   },
   { timestamps: true }
 );
+
+listingSchema.virtual("bookings", {
+  ref: "Booking",
+  localField: "_id",
+  foreignField: "listing",
+});
 
 const Listing = mongoose.model("Listing", listingSchema);
 

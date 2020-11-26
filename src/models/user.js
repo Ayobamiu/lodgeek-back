@@ -44,7 +44,7 @@ const userSchema = mongoose.Schema(
     image: {
       type: String,
     },
-    tokens: [
+    tokens: [ 
       {
         token: {
           type: String,
@@ -54,6 +54,8 @@ const userSchema = mongoose.Schema(
   },
   { timestamps: true }
 );
+
+
 
 userSchema.methods.toJSON = function () {
   const user = this;
