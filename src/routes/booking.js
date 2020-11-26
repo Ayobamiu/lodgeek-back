@@ -1,4 +1,5 @@
 const express = require("express");
+const { isAvailable } = require("../logic/booking");
 const Booking = require("../models/booking");
 
 const router = express.Router();
@@ -29,16 +30,8 @@ router.post("/bookings/check-availability", async (req, res) => {
       checkIn: req.body.checkIn,
       checkOut: req.body.checkOut,
     };
-    const isAvailable = () => {
-      for (let index = 0; index < bookingDates.length; index++) {
-        const date = bookingDates[index];
-        return (
-          bookingDate.checkOut < date.checkIn ||
-          bookingDate.checkIn > date.checkOut
-        );
-      }
-    };
-    res.send({ bookingDates, bookingDate, isAvailable: isAvailable() });
+    const status = isAvailable(bookingDates, bookingDate); // return true if room is not booked
+    res.send({ bookingDates, bookingDate, isAvailable: status });
   } catch (error) {
     res.status(500).send();
   }
