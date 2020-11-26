@@ -29,7 +29,16 @@ router.post("/bookings/check-availability", async (req, res) => {
       checkIn: req.body.checkIn,
       checkOut: req.body.checkOut,
     };
-    res.send({ bookingDates, bookingDate });
+    const isAvailable = () => {
+      for (let index = 0; index < bookingDates.length; index++) {
+        const date = bookingDates[index];
+        return (
+          bookingDate.checkOut < date.checkIn ||
+          bookingDate.checkIn > date.checkOut
+        );
+      }
+    };
+    res.send({ bookingDates, bookingDate, isAvailable: isAvailable() });
   } catch (error) {
     res.status(500).send();
   }
