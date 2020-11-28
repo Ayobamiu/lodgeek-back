@@ -1,4 +1,15 @@
 const mongoose = require("mongoose");
+const bookingStatus = [
+  "requestSent",
+  "requestGrantedByHost",
+  "requestRejectedByHost",
+  "paid",
+  "resumed",
+  "confirmedByGuest",
+  "rejectedByGuest",
+  "acceptedByGuest",
+  " completed",
+];
 
 const bookingSchema = mongoose.Schema(
   {
@@ -9,6 +20,10 @@ const bookingSchema = mongoose.Schema(
     checkOut: {
       type: String,
       required: true,
+    },
+    status: {
+      type: String,
+      enum: bookingStatus,
     },
     listing: {
       type: mongoose.Schema.Types.ObjectId,
