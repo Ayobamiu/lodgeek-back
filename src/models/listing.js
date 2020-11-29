@@ -17,6 +17,10 @@ const listingSchema = mongoose.Schema(
     type: {
       type: String,
     },
+    isInstantBooking: {
+      type: Boolean,
+      default: true,
+    },
   },
   { timestamps: true }
 );

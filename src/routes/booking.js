@@ -1,12 +1,17 @@
 const express = require("express");
 const { isAvailable } = require("../logic/booking");
 const Booking = require("../models/booking");
+const Listing = require("../models/listing");
 
 const router = express.Router();
 
 router.post("/bookings", async (req, res) => {
   try {
+    const listing = await Listing.findById(req.body.listing);
     const booking = new Booking(req.body);
+    if (listing.isInstantBooking) {
+      booking.status = "requestGrantedByHost";
+    }
     await booking.save();
     res.send(booking);
   } catch (error) {
